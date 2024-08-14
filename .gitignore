@@ -1,0 +1,54 @@
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+
+# Compiled static libraries
+*.a
+*.lib
+
+# Compiled shared libraries
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.out
+*.exe
+
+# Build directories
+/build
+/bin
+/Debug
+/Release
+
+# IDE specific files
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.idea/
+*.iml
+
+# SFML specific files
+*.pdb
+*.idb
+*.ilk
+
+# macOS Finder
+.DS_Store
+
+# Linux Trash directory
+.Trash-*
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# Miscellaneous
+*.log
+*.tmp
+*.swp
+*.swo
