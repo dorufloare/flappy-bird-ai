@@ -1,7 +1,32 @@
-all: compile link
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -std=c++17 -Isrc/include -Isrc/include/SFML
 
-compile:
-	g++ -Isrc/include -c main.cpp
+# Directories
+SRC_DIR = src
+LIB_DIR = src/lib
 
-link:
-	g++ *.o -o main -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -lsfml-audio
+# Source and object files
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/Bird.cpp $(SRC_DIR)/Pipe.cpp $(SRC_DIR)/textures.cpp $(SRC_DIR)/Game.cpp
+OBJS = $(SRCS:.cpp=.o)
+
+# Output executable
+TARGET = flappybird
+
+# SFML libraries
+SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lopengl32
+
+# Default target
+all: $(TARGET)
+
+# Linking
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(SFML_LIBS) -L$(LIB_DIR)
+
+# Compiling
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Clean up
+clean:
+	rm -f $(OBJS) $(TARGET)
