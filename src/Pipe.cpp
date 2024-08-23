@@ -6,7 +6,12 @@
 Pipe::Pipe(float x) {
   
   float gap = PIPE_GAP;
-  pipeHeight = std::rand() % (int)(SCREEN_HEIGHT - gap);
+
+  int minPipeHeight = SCREEN_BORDER;
+  int maxPipeHeight = SCREEN_HEIGHT - gap - SCREEN_BORDER;
+
+  pipeHeight = std::rand() % (maxPipeHeight - minPipeHeight) + minPipeHeight;
+
   upperSprite.setTexture(PIPE_TEXTURE);
   upperSprite.setPosition(x, 0);
   upperSprite.setTextureRect(sf::IntRect(0, 0, PIPE_WIDTH, pipeHeight));
@@ -46,4 +51,8 @@ float Pipe::getPositionX() const {
 
 std::pair<float,float> Pipe::getGap() {
   return std::make_pair(upperSprite.getPosition().y + pipeHeight, lowerSprite.getPosition().y);
+}
+
+float Pipe::getRightside() const {
+  return getPositionX() + PIPE_WIDTH;
 }

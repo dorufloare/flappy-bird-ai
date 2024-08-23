@@ -4,10 +4,12 @@
 
 sf::Texture PIPE_TEXTURE;
 sf::Texture BIRD_TEXTURE;
+sf::Font ARIAL_FONT;
 
-void loadTextures() {
+void loadAssets() {
   PIPE_TEXTURE.loadFromFile("./assets/images/pipe.png");
   BIRD_TEXTURE.loadFromFile("./assets/images/bird.png");
+  ARIAL_FONT.loadFromFile("./assets/fonts/arial.ttf");
 }
 
 void drawTextures(sf::RenderWindow& window, const Bird& bird, const std::vector<Pipe>& pipes) {
@@ -19,6 +21,4 @@ void drawTextures(sf::RenderWindow& window, const Bird& bird, const std::vector<
     window.draw(pipe.getLowerSprite());
     window.draw(pipe.getUpperSprite());
   }
-
-  window.display();
 }

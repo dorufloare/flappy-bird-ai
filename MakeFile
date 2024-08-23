@@ -1,14 +1,15 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Isrc/include -Isrc/include/SFML
+CXXFLAGS = -std=c++17 -Isrc/include -Isrc/include/SFML -MMD -MP
 
 # Directories
 SRC_DIR = src
 LIB_DIR = src/lib
 
 # Source and object files
-SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/Bird.cpp $(SRC_DIR)/Pipe.cpp $(SRC_DIR)/textures.cpp $(SRC_DIR)/Game.cpp
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/Bird.cpp $(SRC_DIR)/Pipe.cpp $(SRC_DIR)/textures.cpp $(SRC_DIR)/Game.cpp $(SRC_DIR)/QLearningAI.cpp
 OBJS = $(SRCS:.cpp=.o)
+DEPS = $(OBJS:.o=.d)
 
 # Output executable
 TARGET = flappybird
@@ -27,6 +28,9 @@ $(TARGET): $(OBJS)
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Include the dependency files
+-include $(DEPS)
+
 # Clean up
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) $(DEPS)

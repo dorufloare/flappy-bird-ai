@@ -13,6 +13,7 @@ public:
     sf::Sprite& getUpperSprite();
     bool isOffScreen() const;
     float getPositionX() const;
+    float getRightside() const;
     std::pair<float,float> getGap();
 private:
     sf::Sprite lowerSprite;

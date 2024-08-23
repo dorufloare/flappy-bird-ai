@@ -4,8 +4,11 @@
 
 Game::Game() {
   pipeSpawnTimer = 0;
-  pipes.clear();
+  score = 0;
   gameOver = false;
+  nearestPipeIndex = -1;
+
+  pipes.clear();
   bird = Bird();
 }
 
@@ -16,7 +19,17 @@ void Game::update() {
   bird.update();
   checkForNewPipes();
   removeOldPipes();
+  updateScore();
+  nearestPipeIndex = getNearestPipeIndex();
   checkForCollisions();
+}
+
+void Game::updateScore() {
+  if (nearestPipeIndex == -1)
+    return;
+
+  if (pipes[nearestPipeIndex].getRightside() < BIRD_POSITION_X)
+    ++score;
 }
 
 void Game::removeOldPipes() {
@@ -58,11 +71,10 @@ void Game::checkForCollisions() {
     return;
   }
 
-  int nearestPipe = getNearestPipeIndex();
-  if (nearestPipe == -1)
+  if (nearestPipeIndex == -1)
     return;
 
-  if (collisionWithPipe(pipes[nearestPipe])) {
+  if (collisionWithPipe(pipes[nearestPipeIndex])) {
     endGame();
   }
 }
@@ -72,17 +84,15 @@ bool Game::collisionWithPipe(Pipe& pipe) {
   if (BIRD_POSITION_X + BIRD_WIDTH < pipe.getPositionX())
     return false;
 
-  //we are in the gap
   float birdTop = bird.getPositionY();
   float birdBottom = birdTop + BIRD_HEIGHT;
 
   std::pair<float,float> pipeGap = pipe.getGap();
 
-  if (pipeGap.first < birdTop && birdBottom < pipeGap.second)
+  //we are inside the gap
+  if (pipeGap.first < birdTop && birdBottom < pipeGap.second) {
     return false;
-
-  std::cout << "Collision with pipe: " << pipeGap.first << ' ' << pipeGap.second 
-            << " and bird " << birdTop << ' ' << birdBottom << std::endl;
+  }
 
   return true;
 }
@@ -96,7 +106,7 @@ int Game::getNearestPipeIndex() {
 
   //the pipes are sorted from left to right
   for (int i = 0; i < (int)pipes.size(); ++i) {
-    float pipeRightPosition = pipes[i].getPositionX() + PIPE_WIDTH;
+    float pipeRightPosition = pipes[i].getRightside();
 
     if (birdPosition <= pipeRightPosition)
       return i;
@@ -108,4 +118,35 @@ void Game::endGame() {
   gameOver = true;
   std::cout << "GAME OVER" << std::endl;
   bird.die();
+}
+
+float Game::getVerticalDistance() {
+  if (nearestPipeIndex == -1)   //pipes havent spawned yet
+    return 0;
+
+  std::pair<float,float> nextGap = pipes[nearestPipeIndex].getGap();
+  int nextGapMidpoint = (nextGap.first + nextGap.second) / 2;
+
+  return bird.getPositionY() - nextGapMidpoint;
+}
+
+float Game::getHorizontalDistance() {
+  if (nearestPipeIndex == -1)  //pipes havent spawned yet
+    return SCREEN_WIDTH;
+
+  int nextPipeRightside = pipes[nearestPipeIndex].getRightside();
+
+  return nextPipeRightside - BIRD_POSITION_X;
+}
+
+float Game::getBirdPosition() {
+  return bird.getPositionY();
+}
+
+bool Game::isGameOver() {
+  return gameOver;
+}
+
+int Game::getScore() {
+  return score;
 }

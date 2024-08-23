@@ -8,8 +8,17 @@ class Game {
     Game();
     void update();
     void flapBird();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow &window);
     void endGame();
+    int getScore();
+    bool isGameOver();
+    void updateScore();
+
+    //bird-pipe distance
+    float getVerticalDistance();
+    float getHorizontalDistance();
+    float getBirdPosition();
+
   private:
     void checkForNewPipes();
     void addNewPipe();
@@ -23,4 +32,6 @@ class Game {
     sf::Clock clock;
     float pipeSpawnTimer;
     bool gameOver;
+    int score;
+    int nearestPipeIndex;
 };
