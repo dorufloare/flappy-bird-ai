@@ -6,6 +6,8 @@ In the constants.hpp you have the game and AI parameters
 
 The AI reached a score of 55 in a couple of hours of running (aprox 10000 episodes), if you have any ideas to make it better, contact me at dorufloare@yahoo.com
 
+PS: I will maybie implement a deep-qlearning aproach in the future
+
 In main.cpp you can uncomment a line
 
 ```
